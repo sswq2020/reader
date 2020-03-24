@@ -11,11 +11,26 @@ export function handleError (err) {
   console.log(err)
 }
 
-export function get (url, params = {}) {
+export function fetchGet (url, params = {}) {
   return new Promise((resolve, reject) => {
     const fly = createFly()
     if (fly) {
       fly.get(url, params).then(response => {
+        resolve(response)
+      }).catch((err) => {
+        handleError(err)
+        console.log(err)
+        reject(err)
+      })
+    }
+  })
+}
+
+export function fetchPost (url, params = {}) {
+  return new Promise((resolve, reject) => {
+    const fly = createFly()
+    if (fly) {
+      fly.post(url, params).then(response => {
         resolve(response)
       }).catch((err) => {
         handleError(err)
