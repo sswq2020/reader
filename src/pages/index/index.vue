@@ -1,17 +1,19 @@
 <template>
   <div class="home">
     <SearchBar :disabled="false" @onClick="onSearchBarkClick" />
-    <ImageView src="https://www.youbaobao.xyz/mpvue-res/big.jpg" />
+    <HomeCard />
   </div>
 </template>
 
 <script>
 import SearchBar from '../../components/home/SearchBar'
 import ImageView from '../../components/base/ImageView'
+import HomeCard from '../../components/base/HomeCard'
 export default {
   components: {
     SearchBar,
-    ImageView
+    ImageView,
+    HomeCard
   },
   methods: {
     onSearchBarkClick() {
