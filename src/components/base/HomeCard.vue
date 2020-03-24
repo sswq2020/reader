@@ -36,13 +36,15 @@
           </van-icon>
         </div>
       </div>
-      <div class="feedback-wrapper"><span>反馈</span></div>
+      <div class="feedback-wrapper"><span @click="onFeedBackClick">反馈</span></div>
     </div>
+    <van-dialog id="van-dialog"></van-dialog>
   </div>
 </template>
 
 <script>
 import ImageView from './ImageView'
+import Dialog from 'vant-weapp/dist/dialog/dialog'
 export default {
   name: 'HomeCard',
   components: {
@@ -65,7 +67,20 @@ export default {
   methods: {
     gotoShelf() {},
     onBookClick() {},
-    sign() {}
+    sign() {},
+    onFeedBackClick() {
+      // https://youzan.github.io/vant/#/zh-CN/dialog
+      Dialog.confirm({
+        title: '反馈',
+        message: '你是否确认提交反馈信息',
+        confirmButtonText: '是',
+        cancelButtonText: '否'
+      }).then(() => {
+        console.log('点击是之后的事件')
+      }).catch(() => {
+        console.log('点击否之后的事件')
+      })
+    }
   }
 }
 </script>
