@@ -22,6 +22,7 @@
       size="16px"
       color="#858C96"
       @click="onClearClick"
+      v-if="searchWord.length>0"
       /></van-icon>
     </div>
   </div>

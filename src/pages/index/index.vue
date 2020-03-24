@@ -1,23 +1,28 @@
 <template>
-  <div>
-    <span class="msg">Hello world</span>
-    <van-button type="primary" @click="jump">按钮</van-button>
+  <div class="home">
+    <SearchBar :disabled="false" @onClick="onSearchBarkClick" />
+    <ImageView src="https://www.youbaobao.xyz/mpvue-res/big.jpg" />
   </div>
 </template>
 
 <script>
+import SearchBar from '../../components/home/SearchBar'
+import ImageView from '../../components/base/ImageView'
 export default {
-  name: 'first',
+  components: {
+    SearchBar,
+    ImageView
+  },
   methods: {
-    jump () {
-      this.$router.push('/pages/index/main')
+    onSearchBarkClick() {
+      // 跳转到搜索页面
     }
+  },
+  watch: {
+    src(newV, oldV) {}
   }
 }
 </script>
 
 <style lang="scss" scoped>
-.msg {
-  color: red;
-}
 </style>
