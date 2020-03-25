@@ -11,9 +11,13 @@
     <div class="home-book">
       <HomeBook
         title="为你推荐"
-        row="4"
+        row="2"
         col="2"
         :data="data"
+        :mode="'category'"
+        btnText="更多"
+        @onMoreClick="onBookMoreClick"
+        @onBookClick="onHomeBookClick"
       />
     </div>
   </div>
@@ -39,6 +43,12 @@ export default {
     },
     onBannerClick() {
       console.log('Banner CLick')
+    },
+    onBookMoreClick() {
+      console.log('more click')
+    },
+    onHomeBookClick() {
+      console.log('book click')
     }
   },
   watch: {
@@ -46,59 +56,28 @@ export default {
   },
   data() {
     return {
-      data: [{
-        'id': 34,
-        'fileName': '2018_Book_GeographiesOfTheUniversity',
-        'cover': 'https://www.youbaobao.xyz/book/res/img/Geography/978-3-319-75593-9_CoverFigure.jpg',
-        'title': 'Geographies of the University',
-        'author': 'Peter Meusburger',
-        'publisher': 'Springer International Publishing',
-        'bookId': '2018_Book_GeographiesOfTheUniversity',
-        'category': 7,
-        'categoryText': 'Geography',
-        'language': 'en',
-        'rootFile': 'OEBPS/package.opf'
-      },
-      {
-        'id': 59,
-        'fileName': '2018_Book_DrinkingInVictorianAndEdwardia',
-        'cover': 'https://www.youbaobao.xyz/book/res/img/History/978-3-319-92964-4_CoverFigure.jpg',
-        'title': 'Drinking in Victorian and Edwardian Britain',
-        'author': 'Thora Hands',
-        'publisher': 'Springer International Publishing',
-        'bookId': '2018_Book_DrinkingInVictorianAndEdwardia',
-        'category': 8,
-        'categoryText': 'History',
-        'language': 'en',
-        'rootFile': 'OEBPS/package.opf'
-      },
-      {
-        'id': 60,
-        'fileName': '2018_Book_HarnessingThePowerOfTheCrimina',
-        'cover': 'https://www.youbaobao.xyz/book/res/img/History/978-3-319-77908-9_CoverFigure.jpg',
-        'title': 'Harnessing the Power of the Criminal Corpse',
-        'author': 'Sarah Tarlow',
-        'publisher': 'Springer International Publishing',
-        'bookId': '2018_Book_HarnessingThePowerOfTheCrimina',
-        'category': 8,
-        'categoryText': 'History',
-        'language': 'en',
-        'rootFile': 'OEBPS/package.opf'
-      },
-      {
-        'id': 75,
-        'fileName': '2018_Book_TheEuropeanBloodAndMarrowTrans',
-        'cover': 'https://www.youbaobao.xyz/book/res/img/MedicineAndPublicHealth/978-3-319-50026-3_CoverFigure.jpg',
-        'title': 'The European Blood and Marrow Transplantation Textbook for Nurses',
-        'author': 'Michelle Kenyon',
-        'publisher': 'Springer International Publishing',
-        'bookId': '2018_Book_TheEuropeanBloodAndMarrowTrans',
-        'category': 17,
-        'categoryText': 'MedicineAndPublicHealth',
-        'language': 'en',
-        'rootFile': 'OEBPS/package.opf'
-      }
-      ]
+      data: [
+        {
+          'cover': 'https://www.youbaobao.xyz/book/res/img/Biomedicine/978-3-319-25474-6_CoverFigure.jpg',
+          'category': 12,
+          'categoryText': 'Biomedicine',
+          'num': 14,
+          'cover2': 'https://www.youbaobao.xyz/book/res/img/Biomedicine/978-3-319-72790-5_CoverFigure.jpg'
+        },
+        {
+          'cover': 'https://www.youbaobao.xyz/book/res/img/BusinessandManagement/978-3-319-33515-5_CoverFigure.jpg',
+          'category': 13,
+          'categoryText': 'BusinessandManagement',
+          'num': 16,
+          'cover2': 'https://www.youbaobao.xyz/book/res/img/BusinessandManagement/978-3-319-95261-1_CoverFigure.jpg'
+        },
+        {
+          'cover': 'https://www.youbaobao.xyz/book/res/img/ComputerScience/978-3-319-90415-3_CoverFigure.jpg',
+          'category': 1,
+          'categoryText': 'ComputerScience',
+          'num': 56,
+          'cover2': 'https://www.youbaobao.xyz/book/res/img/ComputerScience/978-3-319-96142-2_CoverFigure.jpg'
+        }]
     }
   }
 }
