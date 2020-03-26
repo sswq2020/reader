@@ -1,7 +1,7 @@
 <template>
   <div class="home">
-    <SearchBar :disabled="false" @onClick="onSearchBarkClick" />
-    <HomeCard />
+    <SearchBar :hotSearch="hotSearch" :disabled="false" @onClick="onSearchBarkClick" />
+    <HomeCard :data="homeCard" />
     <HomeBanner
       @onClick="onBannerClick"
       img="http://www.youbaobao.xyz/book/res/bg.jpg"
@@ -11,11 +11,47 @@
     <div class="home-book">
       <HomeBook
         title="为你推荐"
+        row="1"
+        col="3"
+        :data="recommend"
+        mode="col"
+        btnText="换一批"
+        @onMoreClick="onBookMoreClick"
+        @onBookClick="onHomeBookClick"
+      />
+    </div>
+    <div class="home-book">
+      <HomeBook
+        title="免费阅读"
         row="2"
         col="2"
-        :data="data"
-        :mode="'category'"
-        btnText="更多"
+        :data="freeRead"
+        mode="row"
+        btnText="换一批"
+        @onMoreClick="onBookMoreClick"
+        @onBookClick="onHomeBookClick"
+      />
+    </div>
+    <div class="home-book">
+      <HomeBook
+        title="当前最热"
+        row="1"
+        col="4"
+        :data="hotBook"
+        mode="col"
+        btnText="换一批"
+        @onMoreClick="onBookMoreClick"
+        @onBookClick="onHomeBookClick"
+      />
+    </div>
+    <div class="home-book">
+      <HomeBook
+        title="分类"
+        row="2"
+        col="2"
+        :data="category"
+        mode="category"
+        btnText="查看全部"
         @onMoreClick="onBookMoreClick"
         @onBookClick="onHomeBookClick"
       />
@@ -29,6 +65,7 @@ import ImageView from 'components/base/ImageView'
 import HomeCard from 'components/base/HomeCard'
 import HomeBanner from 'components/base/HomeBanner'
 import HomeBook from 'components/base/HomeBook'
+import { getHomeData } from 'api/index'
 export default {
   components: {
     SearchBar,
@@ -49,6 +86,35 @@ export default {
     },
     onHomeBookClick() {
       console.log('book click')
+    },
+    async _getHomeData() {
+      const res = await getHomeData('1234')
+      const {
+        hotSearch: { keyword },
+        category,
+        recommend,
+        freeRead,
+        hotBook,
+        shelf,
+        shelfCount,
+        banner
+      } = res.data
+      this.hotSearch = keyword
+      this.category = category
+      this.recommend = recommend
+      this.freeRead = freeRead
+      this.hotBook = hotBook
+      this.shelf = shelf
+      this.banner = banner
+      this.homeCard = {
+        bookList: shelf,
+        num: shelfCount,
+        userInfo: {
+          nickName: '米老鼠',
+          avatar: 'https://qpic.y.qq.com/music_cover/hKFribMhwH4ClwNWJxicuCxmpic7Ateupz2nto2UYtYZn9VlORc1DP5rg/300?n=1'
+        }
+
+      }
     }
   },
   watch: {
@@ -56,29 +122,17 @@ export default {
   },
   data() {
     return {
-      data: [
-        {
-          'cover': 'https://www.youbaobao.xyz/book/res/img/Biomedicine/978-3-319-25474-6_CoverFigure.jpg',
-          'category': 12,
-          'categoryText': 'Biomedicine',
-          'num': 14,
-          'cover2': 'https://www.youbaobao.xyz/book/res/img/Biomedicine/978-3-319-72790-5_CoverFigure.jpg'
-        },
-        {
-          'cover': 'https://www.youbaobao.xyz/book/res/img/BusinessandManagement/978-3-319-33515-5_CoverFigure.jpg',
-          'category': 13,
-          'categoryText': 'BusinessandManagement',
-          'num': 16,
-          'cover2': 'https://www.youbaobao.xyz/book/res/img/BusinessandManagement/978-3-319-95261-1_CoverFigure.jpg'
-        },
-        {
-          'cover': 'https://www.youbaobao.xyz/book/res/img/ComputerScience/978-3-319-90415-3_CoverFigure.jpg',
-          'category': 1,
-          'categoryText': 'ComputerScience',
-          'num': 56,
-          'cover2': 'https://www.youbaobao.xyz/book/res/img/ComputerScience/978-3-319-96142-2_CoverFigure.jpg'
-        }]
+      hotSearch: '',
+      homeCard: null,
+      banner: {},
+      recommend: [],
+      freeRead: [],
+      hotBook: [],
+      category: []
     }
+  },
+  mounted() {
+    this._getHomeData()
   }
 }
 </script>

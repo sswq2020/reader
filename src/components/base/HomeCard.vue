@@ -1,28 +1,20 @@
 <template>
   <div class="home-card">
-    <div class="home-card-inner">
+    <div class="home-card-inner" v-if="data">
       <div class="user-info">
         <div class="avatar-wrapper">
-          <ImageView src="https://qpic.y.qq.com/music_cover/hKFribMhwH4ClwNWJxicuCxmpic7Ateupz2nto2UYtYZn9VlORc1DP5rg/300?n=1" round="true" >
+          <ImageView :src="data.userInfo.avatar" round="true" >
           </ImageView>
         </div>
-        <div class="nickname">米老鼠</div>
-        <div class="shelf-text">书架共有3本好书</div>
+        <div class="nickname">{{data.userInfo.nickName}}</div>
+        <div class="shelf-text">书架共有{{data.num}}本好书</div>
         <div class="round-item"></div>
         <div class="shelf-text">特别精选</div>
       </div>
       <div class="book-info">
-        <div class="book-wrapper">
-          <div class="book-img-warpper">
-            <ImageView src="https://www.youbaobao.xyz/book/res/img//EarthSciences/978-981-10-3713-9_CoverFigure.jpg">
-            </ImageView>
-          </div>
-          <div class="book-img-warpper">
-            <ImageView src="https://www.youbaobao.xyz/book/res/img//EarthSciences/978-981-10-3713-9_CoverFigure.jpg">
-            </ImageView>
-          </div>
-          <div class="book-img-warpper">
-            <ImageView src="https://www.youbaobao.xyz/book/res/img//EarthSciences/978-981-10-3713-9_CoverFigure.jpg">
+        <div class="book-wrapper" v-if="data && data.bookList && data.bookList.length">
+          <div @click="onBookClick" class="book-img-warpper" :key="index" v-for="(book,index) in data.bookList">
+            <ImageView :src="book.cover">
             </ImageView>
           </div>
         </div>
@@ -66,7 +58,9 @@ export default {
   },
   methods: {
     gotoShelf() {},
-    onBookClick() {},
+    onBookClick() {
+      this.$emit('onClick')
+    },
     sign() {},
     onFeedBackClick() {
       // https://youzan.github.io/vant/#/zh-CN/dialog
