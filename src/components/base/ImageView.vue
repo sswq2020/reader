@@ -61,15 +61,24 @@ export default {
       this.$emit('onClick')
     },
     onLoad() {
-      console.log(1)
       this.isLoading = false
       this.error = false
     },
     onError() {
-      console.log(2)
       this.error = true
       this.isLoading = false
     }
+  },
+  watch: {
+    src(newV, oldV) {
+      if (newV && newV.length > 0 && newV !== oldV) {
+        this.$nextTick(() => {
+          this.isLoading = true
+          this.error = false
+        })
+      }
+    }
+
   }
 }
 </script>
