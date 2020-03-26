@@ -11,27 +11,21 @@ export function handleError (err) {
   console.log(err)
 }
 
-export function fetchGet (url, params = {}) {
+export function fetch (url, params = {}, method = 'get') {
   return new Promise((resolve, reject) => {
     const fly = createFly()
     if (fly) {
-      fly.get(url, params).then(response => {
-        resolve(response)
-      }).catch((err) => {
-        handleError(err)
-        console.log(err)
-        reject(err)
-      })
-    }
-  })
-}
-
-export function fetchPost (url, params = {}) {
-  return new Promise((resolve, reject) => {
-    const fly = createFly()
-    if (fly) {
-      fly.post(url, params).then(response => {
-        resolve(response)
+      fly[method](url, params).then(response => {
+        if (response && response.data && response.data.error_code === 0) {
+          resolve(response.data)
+        } else {
+          const msg = (response && response.data && response.data.msg) || '请求失败'
+          mpvue.showToast({
+            title: msg,
+            duration: 2000
+          })
+          reject(response)
+        }
       }).catch((err) => {
         handleError(err)
         console.log(err)
