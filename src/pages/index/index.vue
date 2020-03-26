@@ -16,7 +16,7 @@
         :data="recommend"
         mode="col"
         btnText="换一批"
-        @onMoreClick="onBookMoreClick"
+        @onMoreClick="() => recommendChange('recommend')"
         @onBookClick="onHomeBookClick"
       />
     </div>
@@ -28,7 +28,7 @@
         :data="freeRead"
         mode="row"
         btnText="换一批"
-        @onMoreClick="onBookMoreClick"
+        @onMoreClick="() => recommendChange('freeRead')"
         @onBookClick="onHomeBookClick"
       />
     </div>
@@ -40,7 +40,7 @@
         :data="hotBook"
         mode="col"
         btnText="换一批"
-        @onMoreClick="onBookMoreClick"
+        @onMoreClick="() => recommendChange('hotBook')"
         @onBookClick="onHomeBookClick"
       />
     </div>
@@ -52,7 +52,7 @@
         :data="category"
         mode="category"
         btnText="查看全部"
-        @onMoreClick="onBookMoreClick"
+        @onMoreClick="onCategoryMoreClick"
         @onBookClick="onHomeBookClick"
       />
     </div>
@@ -65,7 +65,7 @@ import ImageView from 'components/base/ImageView'
 import HomeCard from 'components/base/HomeCard'
 import HomeBanner from 'components/base/HomeBanner'
 import HomeBook from 'components/base/HomeBook'
-import { getHomeData } from 'api/index'
+import { getHomeData, getRecommend, getFreeRead, getHotBook } from 'api/index'
 export default {
   components: {
     SearchBar,
@@ -75,13 +75,36 @@ export default {
     HomeBook
   },
   methods: {
+    recommendChange(key) {
+      switch (key) {
+        case 'recommend':
+          getRecommend().then(res => {
+            this.recommend = res.data
+          })
+          break
+        case 'freeRead':
+          getFreeRead().then(res => {
+            this.freeRead = res.data
+          })
+          break
+        case 'hotBook':
+          getHotBook().then(res => {
+            this.hotBook = res.data
+          })
+          break
+        default:
+          break
+      }
+
+      console.log(key)
+    },
     onSearchBarkClick() {
       // 跳转到搜索页面
     },
     onBannerClick() {
       console.log('Banner CLick')
     },
-    onBookMoreClick() {
+    onCategoryMoreClick() {
       console.log('more click')
     },
     onHomeBookClick() {
