@@ -138,6 +138,20 @@ export default {
         }
 
       }
+    },
+    getSetting(onSuccess, onFail) {
+      mpvue.getSetting({
+        success(res) {
+          if (res.authSetting['scope.userInfo']) {
+            onSuccess(res)
+          } else {
+            onFail(res)
+          }
+        },
+        fail(res) {
+          console.log(res)
+        }
+      })
     }
   },
   watch: {
@@ -155,7 +169,10 @@ export default {
     }
   },
   mounted() {
-    this._getHomeData()
+    // this._getHomeData()
+    this.getSetting(() => {}, () => {
+      console.log('授权失败')
+    })
   }
 }
 </script>
