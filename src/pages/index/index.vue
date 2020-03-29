@@ -62,10 +62,11 @@
 <script>
 import SearchBar from 'components/home/SearchBar'
 import ImageView from 'components/base/ImageView'
-import HomeCard from 'components/base/HomeCard'
-import HomeBanner from 'components/base/HomeBanner'
-import HomeBook from 'components/base/HomeBook'
+import HomeCard from 'components/home/HomeCard'
+import HomeBanner from 'components/home/HomeBanner'
+import HomeBook from 'components/home/HomeBook'
 import { getHomeData, getRecommend, getFreeRead, getHotBook } from 'api/index'
+import { getSetting } from 'api/wechat'
 export default {
   components: {
     SearchBar,
@@ -170,7 +171,9 @@ export default {
   },
   mounted() {
     // this._getHomeData()
-    this.getSetting(() => {}, () => {
+    getSetting('userInfo', (res) => {
+      console.info('授权成功', res)
+    }, () => {
       console.log('授权失败')
     })
   }
