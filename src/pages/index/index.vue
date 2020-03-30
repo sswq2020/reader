@@ -1,61 +1,64 @@
 <template>
-  <div class="home">
-    <SearchBar :hotSearch="hotSearch" :disabled="false" @onClick="onSearchBarkClick" />
-    <HomeCard :data="homeCard" />
-    <HomeBanner
-      @onClick="onBannerClick"
-      img="http://www.youbaobao.xyz/book/res/bg.jpg"
-      subTitle="立刻体验"
-      title="镇江公交查询小程序指南"
-    />
-    <div class="home-book">
-      <HomeBook
-        title="为你推荐"
-        row="1"
-        col="3"
-        :data="recommend"
-        mode="col"
-        btnText="换一批"
-        @onMoreClick="() => recommendChange('recommend')"
-        @onBookClick="onHomeBookClick"
+  <div>
+    <div class="home" v-if="isAuth">
+      <SearchBar :hotSearch="hotSearch" :disabled="false" @onClick="onSearchBarkClick" />
+      <HomeCard :data="homeCard" />
+      <HomeBanner
+        @onClick="onBannerClick"
+        img="http://www.youbaobao.xyz/book/res/bg.jpg"
+        subTitle="立刻体验"
+        title="镇江公交查询小程序指南"
       />
+      <div class="home-book">
+        <HomeBook
+          title="为你推荐"
+          row="1"
+          col="3"
+          :data="recommend"
+          mode="col"
+          btnText="换一批"
+          @onMoreClick="() => recommendChange('recommend')"
+          @onBookClick="onHomeBookClick"
+        />
+      </div>
+      <div class="home-book">
+        <HomeBook
+          title="免费阅读"
+          row="2"
+          col="2"
+          :data="freeRead"
+          mode="row"
+          btnText="换一批"
+          @onMoreClick="() => recommendChange('freeRead')"
+          @onBookClick="onHomeBookClick"
+        />
+      </div>
+      <div class="home-book">
+        <HomeBook
+          title="当前最热"
+          row="1"
+          col="4"
+          :data="hotBook"
+          mode="col"
+          btnText="换一批"
+          @onMoreClick="() => recommendChange('hotBook')"
+          @onBookClick="onHomeBookClick"
+        />
+      </div>
+      <div class="home-book">
+        <HomeBook
+          title="分类"
+          row="2"
+          col="2"
+          :data="category"
+          mode="category"
+          btnText="查看全部"
+          @onMoreClick="onCategoryMoreClick"
+          @onBookClick="onHomeBookClick"
+        />
+      </div>
     </div>
-    <div class="home-book">
-      <HomeBook
-        title="免费阅读"
-        row="2"
-        col="2"
-        :data="freeRead"
-        mode="row"
-        btnText="换一批"
-        @onMoreClick="() => recommendChange('freeRead')"
-        @onBookClick="onHomeBookClick"
-      />
-    </div>
-    <div class="home-book">
-      <HomeBook
-        title="当前最热"
-        row="1"
-        col="4"
-        :data="hotBook"
-        mode="col"
-        btnText="换一批"
-        @onMoreClick="() => recommendChange('hotBook')"
-        @onBookClick="onHomeBookClick"
-      />
-    </div>
-    <div class="home-book">
-      <HomeBook
-        title="分类"
-        row="2"
-        col="2"
-        :data="category"
-        mode="category"
-        btnText="查看全部"
-        @onMoreClick="onCategoryMoreClick"
-        @onBookClick="onHomeBookClick"
-      />
-    </div>
+    <Auth v-else></Auth>
   </div>
 </template>
 
@@ -65,6 +68,7 @@ import ImageView from 'components/base/ImageView'
 import HomeCard from 'components/home/HomeCard'
 import HomeBanner from 'components/home/HomeBanner'
 import HomeBook from 'components/home/HomeBook'
+import Auth from 'components/base/Auth'
 import { getHomeData, getRecommend, getFreeRead, getHotBook } from 'api/index'
 import { getSetting } from 'api/wechat'
 export default {
@@ -73,7 +77,8 @@ export default {
     ImageView,
     HomeCard,
     HomeBanner,
-    HomeBook
+    HomeBook,
+    Auth
   },
   methods: {
     recommendChange(key) {
@@ -156,10 +161,10 @@ export default {
     }
   },
   watch: {
-    src(newV, oldV) {}
   },
   data() {
     return {
+      isAuth: true,
       hotSearch: '',
       homeCard: null,
       banner: {},
@@ -173,8 +178,10 @@ export default {
     // this._getHomeData()
     getSetting('userInfo', (res) => {
       console.info('授权成功', res)
+      this.isAuth = true
     }, () => {
       console.log('授权失败')
+      this.isAuth = false
     })
   }
 }
