@@ -58,7 +58,7 @@
         />
       </div>
     </div>
-    <Auth v-else></Auth>
+    <Auth v-else @getUserInfo="getUserInfo"></Auth>
   </div>
 </template>
 
@@ -145,19 +145,20 @@ export default {
 
       }
     },
-    getSetting(onSuccess, onFail) {
-      mpvue.getSetting({
-        success(res) {
-          if (res.authSetting['scope.userInfo']) {
-            onSuccess(res)
-          } else {
-            onFail(res)
-          }
-        },
-        fail(res) {
-          console.log(res)
-        }
+    _getSetting() {
+      let that = this
+      getSetting('userInfo', (res) => {
+        console.info('授权成功', res)
+        that.isAuth = true
+        that._getHomeData()
+      }, () => {
+        console.log('授权失败')
+        that.isAuth = false
       })
+    },
+    getUserInfo(e) {
+      console.log(e)
+      this._getSetting()
     }
   },
   watch: {
@@ -175,14 +176,7 @@ export default {
     }
   },
   mounted() {
-    // this._getHomeData()
-    getSetting('userInfo', (res) => {
-      console.info('授权成功', res)
-      this.isAuth = true
-    }, () => {
-      console.log('授权失败')
-      this.isAuth = false
-    })
+    this._getSetting()
   }
 }
 </script>
