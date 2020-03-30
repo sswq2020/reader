@@ -8,7 +8,13 @@
         <div class="sub-title">登录小施读书</div>
         <div class="title">免费好书畅快读</div>
       </div>
-      <button class="auth-btn">登录授权</button>
+      <!-- 官方文档https://developers.weixin.qq.com/miniprogram/dev/api/open-api/user-info/wx.getUserInfo.html -->
+      <button
+        class="auth-btn"
+        @getuserinfo="getUserInfo"
+        open-type="getUserInfo">
+        登录授权
+      </button>
     </div>
   </div>
 </template>
@@ -19,6 +25,11 @@ export default {
   name: 'Auth',
   components: {
     ImageView
+  },
+  methods: {
+    getUserInfo() {
+      this.$emit('getUserInfo')
+    }
   }
 }
 </script>
