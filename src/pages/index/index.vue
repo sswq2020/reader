@@ -58,7 +58,7 @@
         />
       </div>
     </div>
-    <Auth v-else @getUserInfo="getUserInfo"></Auth>
+    <Auth v-else @getUserInfo="_getUserInfo"></Auth>
   </div>
 </template>
 
@@ -70,7 +70,7 @@ import HomeBanner from 'components/home/HomeBanner'
 import HomeBook from 'components/home/HomeBook'
 import Auth from 'components/base/Auth'
 import { getHomeData, getRecommend, getFreeRead, getHotBook } from 'api/index'
-import { getSetting } from 'api/wechat'
+import { getSetting, getUserInfo } from 'api/wechat'
 export default {
   components: {
     SearchBar,
@@ -79,6 +79,18 @@ export default {
     HomeBanner,
     HomeBook,
     Auth
+  },
+  data() {
+    return {
+      isAuth: true,
+      hotSearch: '',
+      homeCard: null,
+      banner: {},
+      recommend: [],
+      freeRead: [],
+      hotBook: [],
+      category: []
+    }
   },
   methods: {
     recommendChange(key) {
@@ -145,38 +157,34 @@ export default {
 
       }
     },
-    _getSetting() {
+    /** *判断是否已经授权**/
+    async _getSetting() {
       let that = this
-      getSetting('userInfo', (res) => {
+      try {
+        const res = await getSetting('userInfo')
         console.info('授权成功', res)
         that.isAuth = true
-        that._getHomeData()
-      }, () => {
+        this._getUserInfo()
+      } catch (error) {
         console.log('授权失败')
         that.isAuth = false
-      })
+      }
     },
-    getUserInfo(e) {
-      console.log(e)
+    /** *获取微信授权得到的userInfo**/
+    async _getUserInfo() {
+      if (this.isAuth) {
+        const userInfo = await getUserInfo()
+        console.log(userInfo)
+      } else {
+        this._getSetting()
+      }
+    },
+    init() {
       this._getSetting()
     }
   },
-  watch: {
-  },
-  data() {
-    return {
-      isAuth: true,
-      hotSearch: '',
-      homeCard: null,
-      banner: {},
-      recommend: [],
-      freeRead: [],
-      hotBook: [],
-      category: []
-    }
-  },
   mounted() {
-    this._getSetting()
+    this.init()
   }
 }
 </script>
