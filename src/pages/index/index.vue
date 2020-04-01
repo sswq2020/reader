@@ -58,10 +58,9 @@
         />
       </div>
     </div>
-    <Auth v-else @getUserInfo="_getUserInfo"></Auth>
+    <Auth v-else @getUserInfo="init"></Auth>
   </div>
 </template>
-
 <script>
 import SearchBar from 'components/home/SearchBar'
 import ImageView from 'components/base/ImageView'
@@ -70,7 +69,7 @@ import HomeBanner from 'components/home/HomeBanner'
 import HomeBook from 'components/home/HomeBook'
 import Auth from 'components/base/Auth'
 import { getHomeData, getRecommend, getFreeRead, getHotBook } from 'api/index'
-import { getSetting, getUserInfo } from 'api/wechat'
+import { getSetting, getUserInfo, setStorageSync, getStorageSync, getUserOpenId } from 'api/wechat'
 export default {
   components: {
     SearchBar,
@@ -128,8 +127,8 @@ export default {
     onHomeBookClick() {
       console.log('book click')
     },
-    async _getHomeData() {
-      const res = await getHomeData('1234')
+    async _getHomeData(openId) {
+      const res = await getHomeData(openId)
       const {
         hotSearch: { keyword },
         category,
@@ -170,13 +169,16 @@ export default {
         that.isAuth = false
       }
     },
-    /** *获取微信授权得到的userInfo**/
+    /** *获取微信授权得到的userInfo,再根据是否有openId,去请求首页信息**/
     async _getUserInfo() {
-      if (this.isAuth) {
-        const userInfo = await getUserInfo()
-        console.log(userInfo)
+      if (!this.isAuth) { return }
+      const userInfo = await getUserInfo()
+      setStorageSync('userInfo', userInfo)
+      const openId = getStorageSync('openId')
+      if (!openId || openId.length === 0) {
+        await getUserOpenId(this._getHomeData)
       } else {
-        this._getSetting()
+        this._getHomeData(openId)
       }
     },
     init() {
