@@ -69,7 +69,7 @@ import HomeBanner from 'components/home/HomeBanner'
 import HomeBook from 'components/home/HomeBook'
 import Auth from 'components/base/Auth'
 import { getHomeData, getRecommend, getFreeRead, getHotBook, register } from 'api/index'
-import { getSetting, getUserInfo, setStorageSync, getStorageSync, getUserOpenId } from 'api/wechat'
+import { getSetting, getUserInfo, setStorageSync, getStorageSync, getUserOpenId, showLoading, hideLoading } from 'api/wechat'
 export default {
   components: {
     SearchBar,
@@ -128,28 +128,33 @@ export default {
       console.log('book click')
     },
     async _getHomeData(openId, userInfo) {
-      const res = await getHomeData(openId)
-      const {
-        hotSearch: { keyword },
-        category,
-        recommend,
-        freeRead,
-        hotBook,
-        shelf,
-        shelfCount,
-        banner
-      } = res.data
-      this.hotSearch = keyword
-      this.category = category
-      this.recommend = recommend
-      this.freeRead = freeRead
-      this.hotBook = hotBook
-      this.shelf = shelf
-      this.banner = banner
-      this.homeCard = {
-        bookList: shelf,
-        num: shelfCount,
-        userInfo
+      try {
+        const res = await getHomeData(openId)
+        const {
+          hotSearch: { keyword },
+          category,
+          recommend,
+          freeRead,
+          hotBook,
+          shelf,
+          shelfCount,
+          banner
+        } = res.data
+        this.hotSearch = keyword
+        this.category = category
+        this.recommend = recommend
+        this.freeRead = freeRead
+        this.hotBook = hotBook
+        this.shelf = shelf
+        this.banner = banner
+        this.homeCard = {
+          bookList: shelf,
+          num: shelfCount,
+          userInfo
+        }
+        hideLoading()
+      } catch (error) {
+        hideLoading()
       }
     },
     /** *判断是否已经授权**/
@@ -159,6 +164,7 @@ export default {
         const res = await getSetting('userInfo')
         console.info('授权成功', res)
         that.isAuth = true
+        showLoading('正在加载')
         this._getUserInfo()
       } catch (error) {
         console.log('授权失败')

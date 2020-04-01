@@ -75,3 +75,14 @@ export async function getUserOpenId() {
     console.log(error)
   }
 }
+
+export function showLoading(title) {
+  mpvue.showLoading({
+    title,
+    mask: true
+  })
+}
+
+export function hideLoading(title) {
+  mpvue.hideLoading()
+}
