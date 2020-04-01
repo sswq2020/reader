@@ -29,3 +29,11 @@ export function getOpenId(code) {
     code
   })
 }
+
+export function register(openId, userInfo) {
+  return fetch(`${BASE_URL}/user/register`, {
+    openId,
+    platform: mpvuePlatform,
+    ...userInfo
+  }, 'post')
+}

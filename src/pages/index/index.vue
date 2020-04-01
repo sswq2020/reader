@@ -68,7 +68,7 @@ import HomeCard from 'components/home/HomeCard'
 import HomeBanner from 'components/home/HomeBanner'
 import HomeBook from 'components/home/HomeBook'
 import Auth from 'components/base/Auth'
-import { getHomeData, getRecommend, getFreeRead, getHotBook } from 'api/index'
+import { getHomeData, getRecommend, getFreeRead, getHotBook, register } from 'api/index'
 import { getSetting, getUserInfo, setStorageSync, getStorageSync, getUserOpenId } from 'api/wechat'
 export default {
   components: {
@@ -127,7 +127,7 @@ export default {
     onHomeBookClick() {
       console.log('book click')
     },
-    async _getHomeData(openId) {
+    async _getHomeData(openId, userInfo) {
       const res = await getHomeData(openId)
       const {
         hotSearch: { keyword },
@@ -149,11 +149,7 @@ export default {
       this.homeCard = {
         bookList: shelf,
         num: shelfCount,
-        userInfo: {
-          nickName: '米老鼠',
-          avatar: 'https://qpic.y.qq.com/music_cover/hKFribMhwH4ClwNWJxicuCxmpic7Ateupz2nto2UYtYZn9VlORc1DP5rg/300?n=1'
-        }
-
+        userInfo
       }
     },
     /** *判断是否已经授权**/
@@ -178,7 +174,9 @@ export default {
       if (!openId || openId.length === 0) {
         openId = await getUserOpenId()
       }
-      this._getHomeData(openId)
+      this._getHomeData(openId, userInfo).then(() => {
+        register(openId, userInfo)
+      })
     },
     init() {
       this._getSetting()

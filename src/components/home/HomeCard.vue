@@ -3,7 +3,7 @@
     <div class="home-card-inner" v-if="data">
       <div class="user-info">
         <div class="avatar-wrapper">
-          <ImageView :src="data.userInfo.avatar" round="true" >
+          <ImageView :src="data.userInfo.avatarUrl" round="true" >
           </ImageView>
         </div>
         <div class="nickname">{{data.userInfo.nickName}}</div>
