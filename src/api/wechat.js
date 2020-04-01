@@ -63,15 +63,14 @@ export function login() {
 
 /**
  * @description 获取用户的openId
- * @param {Function} cb 获取openId后的回调函数,可以没有
  * */
-export async function getUserOpenId(cb) {
+export async function getUserOpenId() {
   try {
     const code = await login()
     const res = await getOpenId(code)
     const { data: { openid } } = res
     setStorageSync('openId', openid)
-    cb && cb(openid)
+    return openid
   } catch (error) {
     console.log(error)
   }

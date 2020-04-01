@@ -174,12 +174,11 @@ export default {
       if (!this.isAuth) { return }
       const userInfo = await getUserInfo()
       setStorageSync('userInfo', userInfo)
-      const openId = getStorageSync('openId')
+      let openId = getStorageSync('openId')
       if (!openId || openId.length === 0) {
-        await getUserOpenId(this._getHomeData)
-      } else {
-        this._getHomeData(openId)
+        openId = await getUserOpenId()
       }
+      this._getHomeData(openId)
     },
     init() {
       this._getSetting()
