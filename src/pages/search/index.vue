@@ -1,10 +1,16 @@
 <template>
-  <div class="">111</div>
+  <div class="">
+    <Tag text="测试代码"></Tag>
+  </div>
 </template>
 
 <script>
+import Tag from 'components/base/Tag'
 export default {
-  name: 'search'
+  name: 'search',
+  components: {
+    Tag
+  }
 }
 </script>
 
