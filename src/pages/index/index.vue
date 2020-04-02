@@ -116,7 +116,8 @@ export default {
       console.log(key)
     },
     onSearchBarkClick() {
-      // 跳转到搜索页面
+      // 跳转到搜索页面,这个路由跳转是在app.json里配置的
+      this.$router.push('/pages/search/main')
     },
     onBannerClick() {
       console.log('Banner CLick')
