@@ -7,15 +7,34 @@
       @onTagClick="onTagClick"
       @onBtnClick="onBtnClick"
     ></TagGroup>
+    <SearchItem
+      icon="apps-o"
+      title="计算机科学"
+      sub-title="类别"
+    ></SearchItem>
+    <SearchItem
+      icon="apps-o"
+      title="计算机科学"
+      sub-title="类别"
+    ></SearchItem>
+    <SearchItem
+      icon="apps-o"
+      title="计算机科学"
+      sub-title="类别"
+    ></SearchItem>
+
+
   </div>
 </template>
 
 <script>
 import TagGroup from 'components/base/TagGroup'
+import SearchItem from 'components/search/SearchItem'
 export default {
   name: 'search',
   components: {
-    TagGroup
+    TagGroup,
+    SearchItem
   },
   data() {
     return {
