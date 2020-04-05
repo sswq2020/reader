@@ -1,16 +1,39 @@
 <template>
   <div class="">
-    <Tag text="测试代码"></Tag>
+    <TagGroup
+      headerText="热门搜索"
+      btnText="换一批"
+      :value="tags"
+      @onTagClick="onTagClick"
+      @onBtnClick="onBtnClick"
+    ></TagGroup>
   </div>
 </template>
 
 <script>
-import Tag from 'components/base/Tag'
+import TagGroup from 'components/base/TagGroup'
 export default {
   name: 'search',
   components: {
-    Tag
-  }
+    TagGroup
+  },
+  data() {
+    return {
+      tags: [
+        'aaa',
+        'bbb',
+        'ccc',
+        'ddd',
+        'ddd',
+        'ddd',
+        'ddd',
+        'ddd',
+        'ddd'
+      ]
+    }
+  },
+  onTagClick() {},
+  onBtnClick() {}
 }
 </script>
 
