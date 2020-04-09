@@ -7,25 +7,19 @@
       @onTagClick="onTagClick"
       @onBtnClick="onBtnClick"
     ></TagGroup>
-    <SearchItem
-      icon="apps-o"
-      title="计算机科学"
-      sub-title="类别"
-    ></SearchItem>
-    <SearchTable :data="list"></SearchTable>
+    <SearchList :data="data"></SearchList>
   </div>
 </template>
 
 <script>
 import TagGroup from 'components/base/TagGroup'
-import SearchItem from 'components/search/SearchItem'
-import SearchTable from 'components/search/SearchTable'
+import SearchList from 'components/search/SearchList'
+
 export default {
   name: 'search',
   components: {
     TagGroup,
-    SearchItem,
-    SearchTable
+    SearchList
   },
   data() {
     return {
@@ -39,6 +33,23 @@ export default {
         'ddd',
         'ddd',
         'ddd'
+      ],
+      item: [
+        {
+          icon: 'apps-o',
+          title: '计算机科学',
+          subTitle: '类别'
+        },
+        {
+          icon: 'apps-o',
+          title: '计算机科学',
+          subTitle: '类别'
+        },
+        {
+          icon: 'apps-o',
+          title: '计算机科学',
+          subTitle: '类别'
+        }
       ],
       list: [
         {
@@ -92,6 +103,11 @@ export default {
           'rootFile': 'OEBPS/package.opf'
         }
       ]
+    }
+  },
+  computed: {
+    data() {
+      return {item: this.item, list: this.list}
     }
   },
   onTagClick() {},
