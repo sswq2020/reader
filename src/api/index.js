@@ -37,3 +37,12 @@ export function register(openId, userInfo) {
     ...userInfo
   }, 'post')
 }
+
+export function search(keyword, openId, page = 1, pageSize = 20) {
+  return fetch(`${BASE_URL}/book/search`, {
+    keyword,
+    openId,
+    page,
+    pageSize
+  })
+}

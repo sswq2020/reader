@@ -18,7 +18,20 @@ export function formatTime (date) {
   return `${t1} ${t2}`
 }
 
+export function debounce(fn, delay) {
+  let timer = null
+  return function(...args) {
+    if (timer) {
+      clearTimeout(timer)
+    }
+    timer = setTimeout(() => {
+      fn.apply(this, args)
+    }, delay)
+  }
+}
+
 export default {
   formatNumber,
-  formatTime
+  formatTime,
+  debounce
 }
