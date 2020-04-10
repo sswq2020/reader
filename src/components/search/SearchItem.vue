@@ -55,11 +55,16 @@ export default {
     }
   }
   .search-item-info {
+    width: 80%;
     margin-left: 10px;
     .search-item-title {
+      width:100%;
       color: #333;
       font-size: 14px;
       line-height: 20px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
     }
     .search-item-sub-title {
       color: rgba(0, 0, 0, 0.45);
