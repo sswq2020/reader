@@ -117,7 +117,12 @@ export default {
     },
     onSearchBarkClick() {
       // 跳转到搜索页面,这个路由跳转是在app.json里配置的
-      this.$router.push('/pages/search/main')
+      this.$router.push({
+        path: '/pages/search/main',
+        query: {
+          hotSearch: this.hotSearch
+        }
+      })
     },
     onBannerClick() {
       console.log('Banner CLick')
