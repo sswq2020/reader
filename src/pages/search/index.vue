@@ -1,28 +1,51 @@
 <template>
   <div class="">
+    <SearchBar
+      :hotSearch="hotSearchKeyword"
+      :focus="searchFocus"
+      @onChange="onChange"
+      @onClear="onClear"
+    />
     <TagGroup
       headerText="热门搜索"
       btnText="换一批"
-      :value="tags"
-      @onTagClick="onTagClick"
-      @onBtnClick="onBtnClick"
+      :value="hotSearch"
+      @onBtnClick="changeHotSearch"
+      @onTagClick="showBookDetail"
+      v-if="hotSearch.length && !showList"
     ></TagGroup>
-    <SearchList :data="data"></SearchList>
+    <TagGroup
+      headerText="历史搜索"
+      btnText="清空"
+      :value="[]"
+      @onBtnClick="clearHistorySearch"
+      @onTagClick="searchKeyWord"
+      v-if="historySearch.length && !showList"
+    ></TagGroup>
+
+    <SearchList :data="searchList" v-if="showList"></SearchList>
   </div>
 </template>
 
 <script>
 import TagGroup from 'components/base/TagGroup'
 import SearchList from 'components/search/SearchList'
+import SearchBar from 'components/home/SearchBar'
+import { getStorageSync } from 'api/wechat'
+import { search, hotSearch } from 'api/index'
 
 export default {
   name: 'search',
   components: {
     TagGroup,
-    SearchList
+    SearchList,
+    SearchBar
   },
   data() {
     return {
+      hotSearch: [],
+      hotSearchKeyword: '',
+      historySearch: [],
       tags: [
         'aaa',
         'bbb',
@@ -34,84 +57,46 @@ export default {
         'ddd',
         'ddd'
       ],
-      item: [
-        {
-          icon: 'apps-o',
-          title: '计算机科学',
-          subTitle: '类别'
-        },
-        {
-          icon: 'apps-o',
-          title: '计算机科学',
-          subTitle: '类别'
-        },
-        {
-          icon: 'apps-o',
-          title: '计算机科学',
-          subTitle: '类别'
-        }
-      ],
-      list: [
-        {
-          'id': 19,
-          'fileName': '2018_Book_AutonomousControlForAReliableI',
-          'cover': 'https://www.youbaobao.xyz/book/res/img/ComputerScience/978-3-319-90415-3_CoverFigure.jpg',
-          'title': 'Autonomous Control for a Reliable Internet of Services',
-          'author': 'Ivan Ganchev',
-          'publisher': 'Springer International Publishing',
-          'bookId': '2018_Book_AutonomousControlForAReliableI',
-          'category': 1,
-          'categoryText': 'ComputerScience',
-          'language': 'en',
-          'rootFile': 'OEBPS/package.opf'
-        }, {
-          'id': 20,
-          'fileName': '2018_Book_ComputerAidedVerification',
-          'cover': 'https://www.youbaobao.xyz/book/res/img/ComputerScience/978-3-319-96142-2_CoverFigure.jpg',
-          'title': 'Computer Aided Verification',
-          'author': 'Hana Chockler',
-          'publisher': 'Springer International Publishing',
-          'bookId': '2018_Book_ComputerAidedVerification',
-          'category': 1,
-          'categoryText': 'ComputerScience',
-          'language': 'en',
-          'rootFile': 'OEBPS/package.opf'
-        },
-        {
-          'id': 19,
-          'fileName': '2018_Book_AutonomousControlForAReliableI',
-          'cover': 'https://www.youbaobao.xyz/book/res/img/ComputerScience/978-3-319-90415-3_CoverFigure.jpg',
-          'title': 'Autonomous Control for a Reliable Internet of Services',
-          'author': 'Ivan Ganchev',
-          'publisher': 'Springer International Publishing',
-          'bookId': '2018_Book_AutonomousControlForAReliableI',
-          'category': 1,
-          'categoryText': 'ComputerScience',
-          'language': 'en',
-          'rootFile': 'OEBPS/package.opf'
-        }, {
-          'id': 20,
-          'fileName': '2018_Book_ComputerAidedVerification',
-          'cover': 'https://www.youbaobao.xyz/book/res/img/ComputerScience/978-3-319-96142-2_CoverFigure.jpg',
-          'title': 'Computer Aided Verification',
-          'author': 'Hana Chockler',
-          'publisher': 'Springer International Publishing',
-          'bookId': '2018_Book_ComputerAidedVerification',
-          'category': 1,
-          'categoryText': 'ComputerScience',
-          'language': 'en',
-          'rootFile': 'OEBPS/package.opf'
-        }
-      ]
+      searchList: Object.create(null),
+      openId: null
     }
   },
   computed: {
-    data() {
-      return {item: this.item, list: this.list}
+    showList() {
+      return Object.keys(this.searchList).length > 0
     }
   },
-  onTagClick() {},
-  onBtnClick() {}
+  methods: {
+    changeHotSearch() {},
+    clearHistorySearch() {},
+    searchKeyWord() {},
+    onChange(keyword) {
+      if (!keyword || keyword.trim().length === 0) {
+        this.onClear()
+        return
+      }
+      this.onSearch(keyword)
+    },
+    onClear() {
+      this.searchList = Object.create(null)
+    },
+    async onSearch(keyword) {
+      if (!this.openId) { return }
+      const res = await search(keyword, this.openId)
+      this.searchList = res.data
+    },
+    showBookDetail(text, index) {
+      console.log(text, index)
+    }
+
+  },
+  mounted() {
+    this.openId = getStorageSync('openId')
+    this.hotSearchKeyword = this.$route.query.hotSearch
+    hotSearch().then((res) => {
+      this.hotSearch = res.data.map((book) => book.title)
+    })
+  }
 }
 </script>
 
