@@ -49,6 +49,7 @@ export default {
 
 <style lang="scss" scoped>
 .tag-group-wrapper{
+  width:100%;
   margin-top:35px;
   .tag-group-header{
     display: flex;
@@ -64,10 +65,14 @@ export default {
     }
   }
   .tag-group{
+    max-width:100%;
+    box-sizing: border-box;
     display: flex;
     flex-flow: row wrap;
     padding: 4px 10px 0 10px;
     .tag-group-inner{
+      max-width:100%;
+      box-sizing: border-box;
       padding: 12px 6px 0 6px;
     }
   }

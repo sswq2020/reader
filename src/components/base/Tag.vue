@@ -22,6 +22,8 @@ export default {
 </script>
 <style lang="scss" scoped>
 .tag-wrapper{
+  width:100%;
+  box-sizing: border-box;
   display: flex;
   justify-content: center;
   background: #F7F7F9;
