@@ -51,6 +51,7 @@ export default {
 .tag-group-wrapper{
   width:100%;
   margin-top:35px;
+  padding-bottom:10px;
   .tag-group-header{
     display: flex;
     justify-content: space-between;

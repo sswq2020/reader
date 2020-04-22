@@ -5,6 +5,8 @@
       :focus="searchFocus"
       @onChange="onChange"
       @onClear="onClear"
+      @confirmEnter="confirmEnter"
+      ref="searchBar"
     />
     <TagGroup
       headerText="热门搜索"
@@ -17,7 +19,7 @@
     <TagGroup
       headerText="历史搜索"
       btnText="清空"
-      :value="[]"
+      :value="historySearch"
       @onBtnClick="clearHistorySearch"
       @onTagClick="searchKeyWord"
       v-if="historySearch.length && !showList"
@@ -31,8 +33,9 @@
 import TagGroup from 'components/base/TagGroup'
 import SearchList from 'components/search/SearchList'
 import SearchBar from 'components/home/SearchBar'
-import { getStorageSync } from 'api/wechat'
+import { getStorageSync, setStorageSync } from 'api/wechat'
 import { search, hotSearch } from 'api/index'
+const KEY_HISTORY_SEARCH = 'historySearch'
 
 export default {
   name: 'search',
@@ -46,17 +49,7 @@ export default {
       hotSearch: [],
       hotSearchKeyword: '',
       historySearch: [],
-      tags: [
-        'aaa',
-        'bbb',
-        'ccc',
-        'ddd',
-        'ddd',
-        'ddd',
-        'ddd',
-        'ddd',
-        'ddd'
-      ],
+      searchFocus: true,
       searchList: Object.create(null),
       openId: null
     }
@@ -68,7 +61,10 @@ export default {
   },
   methods: {
     changeHotSearch() {},
-    clearHistorySearch() {},
+    clearHistorySearch() {
+      this.historySearch = []
+      setStorageSync(KEY_HISTORY_SEARCH, [])
+    },
     searchKeyWord() {},
     onChange(keyword) {
       if (!keyword || keyword.trim().length === 0) {
@@ -87,12 +83,33 @@ export default {
     },
     showBookDetail(text, index) {
       console.log(text, index)
+    },
+    confirmEnter(keyword) {
+      // 1.判断是否有关键词
+      if (!keyword || keyword.trim().length === 0) {
+      // 如果没有,则获取热门关键词,通过热门关键词发起请求
+        keyword = this.hotSearchKeyword
+        this.$refs.searchBar.setValue(keyword)
+      } else {
+      // 如果有,则用搜索关键词发起
+      }
+      this.onSearch(keyword)
+
+      // 2.将搜索结果写入历史搜索
+      if (!this.historySearch.includes(keyword)) {
+        this.historySearch.push(keyword)
+      }
+      setStorageSync(KEY_HISTORY_SEARCH, this.historySearch)
+
+      // 3.将搜索框失去焦点
+      this.searchFocus = false
     }
 
   },
   mounted() {
     this.openId = getStorageSync('openId')
     this.hotSearchKeyword = this.$route.query.hotSearch
+    this.historySearch = getStorageSync(KEY_HISTORY_SEARCH) || []
     hotSearch().then((res) => {
       this.hotSearch = res.data.map((book) => book.title)
     })
