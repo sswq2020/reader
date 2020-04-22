@@ -14,7 +14,8 @@
         :placeholder="hotSearch.length ? hotSearch : '搜索'"
         class="search-bar-input"
         confirm-type=“search”
-        @comfirm="onConfirm"
+        @confirm="onConfirm($event)"
+        @input="onChange"
         v-model.lazy="searchWord" />
       <van-icon
        class="clear"
@@ -69,7 +70,7 @@ export default {
     onConfirm(e) {
       // 注意这个不是DOM里的e.target,是微信小程序里的e
       const {value} = e.mp.detail
-      this.$emit('onConfirm', value)
+      this.$emit('confirmEnter', value) // 这个组件发送千万别写'onConfrim'有毒
     },
     setValue(value) {
       this.searchWord = value
@@ -95,6 +96,8 @@ export default {
     .search-bar-input{
       flex:1;
       margin: 0 8px;
+      color:#333;
+      font-size:15px;
     }
     .search{
       display: flex;
