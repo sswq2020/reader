@@ -33,7 +33,7 @@
 import TagGroup from 'components/base/TagGroup'
 import SearchList from 'components/search/SearchList'
 import SearchBar from 'components/home/SearchBar'
-import { getStorageSync, setStorageSync } from 'api/wechat'
+import { getStorageSync, setStorageSync, showToast } from 'api/wechat'
 import { search, hotSearch } from 'api/index'
 const KEY_HISTORY_SEARCH = 'historySearch'
 
@@ -51,7 +51,8 @@ export default {
       historySearch: [],
       searchFocus: true,
       searchList: Object.create(null),
-      openId: null
+      openId: null,
+      page: 1
     }
   },
   computed: {
@@ -60,26 +61,41 @@ export default {
     }
   },
   methods: {
-    changeHotSearch() {},
+    async changeHotSearch() {
+      const res = await hotSearch()
+      this.hotSearch = res.data.map((book) => book.title)
+    },
     clearHistorySearch() {
       this.historySearch = []
       setStorageSync(KEY_HISTORY_SEARCH, [])
     },
-    searchKeyWord() {},
+    searchKeyWord(text, index) {
+      this.onClear()
+      this.$refs.searchBar.setValue(text)
+      this.onSearch(text)
+    },
     onChange(keyword) {
       if (!keyword || keyword.trim().length === 0) {
         this.onClear()
         return
       }
+      this.onClear()
       this.onSearch(keyword)
     },
     onClear() {
+      this.page = 1
       this.searchList = Object.create(null)
     },
     async onSearch(keyword) {
       if (!this.openId) { return }
-      const res = await search(keyword, this.openId)
-      this.searchList = res.data
+      const res = await search(keyword, this.openId, this.page)
+      const { book } = res.data
+      const searchBook = this.searchList.book ? this.searchList.book : []
+      if (book && book.length) {
+        this.searchList = {...res.data, book: searchBook.concat(book)}
+      } else {
+        showToast('没有多余数据')
+      }
     },
     showBookDetail(text, index) {
       console.log(text, index)
@@ -93,6 +109,7 @@ export default {
       } else {
       // 如果有,则用搜索关键词发起
       }
+      this.onClear()
       this.onSearch(keyword)
 
       // 2.将搜索结果写入历史搜索
@@ -113,6 +130,21 @@ export default {
     hotSearch().then((res) => {
       this.hotSearch = res.data.map((book) => book.title)
     })
+  },
+  // 小程序生命周期滚动
+  onPageScroll() {
+    console.log('scroll')
+    if (this.searchFocus) {
+      this.searchFocus = false
+    }
+  },
+  // 小程序生命周期滚动
+  onReachBottom() {
+    if (this.showList) {
+      this.page++
+      const searchWord = this.$refs.searchBar.getValue()
+      this.onSearch(searchWord)
+    }
   }
 }
 </script>
