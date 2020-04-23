@@ -60,6 +60,7 @@ export default {
       align-items: center;
       .auth-img{
         width: 74px;
+        height:74px;
       }
       .sub-title{
         margin-bottom:18px;

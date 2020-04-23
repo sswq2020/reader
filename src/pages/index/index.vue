@@ -2,7 +2,7 @@
   <div>
     <div class="home" v-if="isAuth">
       <SearchBar :hotSearch="hotSearch" :disabled="false" @onClick="onSearchBarkClick" />
-      <HomeCard :data="homeCard" />
+      <HomeCard :data="homeCard" @onClick="onHomeBookClick" />
       <HomeBanner
         @onClick="onBannerClick"
         img="http://www.youbaobao.xyz/book/res/bg.jpg"
@@ -131,7 +131,9 @@ export default {
       console.log('more click')
     },
     onHomeBookClick() {
-      console.log('book click')
+      this.$router.push({
+        path: '/pages/detail/main'
+      })
     },
     async _getHomeData(openId, userInfo) {
       try {

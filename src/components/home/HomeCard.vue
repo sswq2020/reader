@@ -59,6 +59,7 @@ export default {
   methods: {
     gotoShelf() {},
     onBookClick() {
+      debugger
       this.$emit('onClick')
     },
     sign() {},
