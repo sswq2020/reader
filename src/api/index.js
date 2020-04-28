@@ -47,6 +47,13 @@ export function search(keyword, openId, page = 1, pageSize = 20) {
   })
 }
 
+export function bookDetail(fileName, openId) {
+  return fetch(`${BASE_URL}/book/detail`, {
+    fileName,
+    openId
+  })
+}
+
 export function hotSearch() {
   return fetch(`${BASE_URL}/book/hot-search`)
 }

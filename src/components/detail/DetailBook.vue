@@ -1,0 +1,74 @@
+<template>
+  <div class="detail-info">
+    <div class="detail-l">
+      <div class="book-img">
+        <ImageView :src="book && book.cover"></ImageView>
+      </div>
+    </div>
+    <div class="detail-r">
+      <div class="book-title">{{(book && book.title) || ''}}</div>
+      <div class="book-author">{{(book && book.author) || ''}}</div>
+      <div class="book-category">{{(book && book.categoryText) || ''}}</div>
+    </div>
+  </div>
+</template>
+
+<script>
+import ImageView from 'components/base/ImageView'
+export default {
+  name: 'detailbook',
+  components: {
+    ImageView
+  },
+  props: {
+    book: {
+      type: Object,
+      default: () => {}
+    }
+  }
+}
+</script>
+
+<style lang="scss" scoped>
+.detail-info {
+  display: flex;
+  padding: 10px 15px;
+  .detail-l {
+    padding-right: 15px;
+    .book-img {
+      width: 100px;
+    }
+  }
+  .detail-r {
+    flex: 1;
+    overflow: hidden;
+    .book-titile {
+      font-size: 18px;
+      line-height: 22px;
+      max-height: 66px;
+      font-weight: 500;
+      overflow: hidden;
+      color: #000;
+      text-overflow: clip;
+    }
+    .book-author {
+      margin-top: 10px;
+      font-size: 16px;
+      line-height: 18px;
+      max-height: 36px;
+      overflow: hidden;
+      color: #333;
+      text-overflow: clip;
+    }
+    .book-category {
+      margin-top: 10px;
+      font-size: 14px;
+      line-height: 16px;
+      max-height: 16px;
+      overflow: hidden;
+      color: #666;
+      text-overflow: clip;
+    }
+  }
+}
+</style>
