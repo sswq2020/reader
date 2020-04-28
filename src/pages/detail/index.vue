@@ -1,21 +1,25 @@
 <template>
   <div>
     <detailbook :book="book"></detailbook>
+    <detailrate :value="rate" @rateChange="ratechange"></detailrate>
   </div>
 </template>
 
 <script>
 import detailbook from 'components/detail/DetailBook'
+import detailrate from 'components/detail/DetailRate'
 import { bookDetail } from 'api/index'
-import { getStorageSync, showLoading, hideLoading } from 'api/wechat'
+import { setStorageSync, getStorageSync, showLoading, hideLoading } from 'api/wechat'
 export default {
   name: 'detail',
   components: {
-    detailbook
+    detailbook,
+    detailrate
   },
   data() {
     return {
-      book: null
+      book: null,
+      rate: getStorageSync('rate') || 0
     }
   },
   methods: {
@@ -24,6 +28,11 @@ export default {
       const res = await bookDetail(fileName, openId)
       hideLoading()
       this.book = res.data
+    },
+    ratechange(rate) {
+      console.log('轻点评分' + rate)
+      this.rate = rate
+      setStorageSync('rate', rate)
     }
   },
   mounted() {
