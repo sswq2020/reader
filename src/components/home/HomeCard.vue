@@ -13,7 +13,7 @@
       </div>
       <div class="book-info">
         <div class="book-wrapper" v-if="data && data.bookList && data.bookList.length">
-          <div @click="onBookClick" class="book-img-warpper" :key="index" v-for="(book,index) in data.bookList">
+          <div @click="onBookClick(book)" class="book-img-warpper" :key="index" v-for="(book,index) in data.bookList">
             <ImageView :src="book.cover">
             </ImageView>
           </div>
@@ -58,9 +58,8 @@ export default {
   },
   methods: {
     gotoShelf() {},
-    onBookClick() {
-      debugger
-      this.$emit('onClick')
+    onBookClick(book) {
+      this.$emit('onClick', book)
     },
     sign() {},
     onFeedBackClick() {

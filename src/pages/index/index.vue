@@ -130,9 +130,12 @@ export default {
     onCategoryMoreClick() {
       console.log('more click')
     },
-    onHomeBookClick() {
+    onHomeBookClick(book) {
       this.$router.push({
-        path: '/pages/detail/main'
+        path: '/pages/detail/main',
+        query: {
+          book: JSON.stringify(book)
+        }
       })
     },
     async _getHomeData(openId, userInfo) {
