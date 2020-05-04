@@ -42,7 +42,7 @@ export default {
   .detail-r {
     flex: 1;
     overflow: hidden;
-    .book-titile {
+    .book-title {
       font-size: 18px;
       line-height: 22px;
       max-height: 66px;
