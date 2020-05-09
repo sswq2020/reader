@@ -57,3 +57,9 @@ export function bookDetail(fileName, openId) {
 export function hotSearch() {
   return fetch(`${BASE_URL}/book/hot-search`)
 }
+
+export function bookContents(fileName) {
+  return fetch(`${BASE_URL}/book/contents`, {
+    fileName
+  })
+}
