@@ -76,7 +76,9 @@ export default {
       }
       switch (!that.isInShelf) {
         case true:
+          showLoading('正在放入书架中...')
           const res = await saveShlef(fileName, openId)
+          hideLoading()
           if (res.error_code === 0) {
             const flag = await that._getBookShelfStatus(fileName, openId)
             that.isInShelf = flag
@@ -95,7 +97,9 @@ export default {
     },
     /** *封装模态框确认成功时的回调函数**/
     async successFn(fileName, openId) {
+      showLoading('正在从书架中移除...')
       const res = await removeShlef(fileName, openId)
+      hideLoading()
       if (res.error_code === 0) {
         const flag = await this._getBookShelfStatus(fileName, openId)
         this.isInShelf = flag
