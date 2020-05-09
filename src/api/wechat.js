@@ -93,3 +93,19 @@ export function showToast(title, duration = 2000) {
     duration
   })
 }
+
+export function showModal(title, content, successFn = () => {}, failFn = () => {}) {
+  mpvue.showModal({
+    title: title,
+    content: content,
+    success (res) {
+      if (res.confirm) {
+        console.log('用户点击确定')
+        successFn()
+      } else if (res.cancel) {
+        console.log('用户点击取消')
+        failFn()
+      }
+    }
+  })
+}
