@@ -63,3 +63,22 @@ export function bookContents(fileName) {
     fileName
   })
 }
+
+export function bookIsInShelf(fileName, openId) {
+  return fetch(`${BASE_URL}/book/shelf/get`, {
+    fileName,
+    openId
+  })
+}
+
+export function saveShlef(fileName, openId) {
+  return fetch(`${BASE_URL}/book/shelf/save`, {
+    shelf: JSON.stringify({fileName, openId})
+  })
+}
+
+export function removeShlef(fileName, openId) {
+  return fetch(`${BASE_URL}/book/shelf/remove`, {
+    shelf: JSON.stringify({fileName, openId})
+  })
+}

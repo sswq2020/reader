@@ -134,7 +134,7 @@ export default {
       this.$router.push({
         path: '/pages/detail/main',
         query: {
-          book: JSON.stringify(book)
+          fileName: book.fileName
         }
       })
     },

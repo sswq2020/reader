@@ -60,7 +60,7 @@ export default {
   },
   mounted() {
     const openId = getStorageSync('openId')
-    const { fileName } = JSON.parse(this.$route.query.book)
+    const { fileName } = this.$route.query
     this._bookDetail(fileName, openId)
   }
 }
