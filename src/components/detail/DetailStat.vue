@@ -8,6 +8,7 @@
         :value="rankAvg"
         color="#717882"
         allow-half
+        readonly
         void-color="#DEE0E2"
         void-icon="star"
         ></van-rate>

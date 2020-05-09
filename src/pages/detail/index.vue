@@ -8,6 +8,7 @@
       :rankNum="book.rankNum"
     ></detailstat>
     <detailrate :value="rate" @rateChange="ratechange"></detailrate>
+    <detailcontents @readBook="readBook" :contents="contents"></detailcontents>
   </div>
 </template>
 
@@ -15,8 +16,9 @@
 import detailbook from 'components/detail/DetailBook'
 import detailrate from 'components/detail/DetailRate'
 import detailstat from 'components/detail/DetailStat'
+import detailcontents from 'components/detail/DetailContents'
 
-import { bookDetail } from 'api/index'
+import { bookDetail, bookContents } from 'api/index'
 import {
   setStorageSync,
   getStorageSync,
@@ -28,25 +30,32 @@ export default {
   components: {
     detailbook,
     detailrate,
-    detailstat
+    detailstat,
+    detailcontents
   },
   data() {
     return {
       book: null,
-      rate: getStorageSync('rate') || 0
+      rate: getStorageSync('rate') || 0,
+      contents: []
     }
   },
   methods: {
     async _bookDetail(fileName, openId) {
       showLoading('正在加载')
       const res = await bookDetail(fileName, openId)
+      const _res_ = await bookContents(fileName)
       hideLoading()
       this.book = res.data
+      this.contents = _res_.data
     },
     ratechange(rate) {
       console.log('轻点评分' + rate)
       this.rate = rate
       setStorageSync('rate', rate)
+    },
+    readBook(nav) {
+      console.log('跳转到阅读器', nav)
     }
   },
   mounted() {
