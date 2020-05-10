@@ -22,6 +22,10 @@ export function getHotBook() {
   return fetch(`${BASE_URL}/book/home/hotBook/v2`)
 }
 
+/***
+ * @description 拿到openId,openId是自己项目后端提供的,需要三个参数
+ * @param {String} code 是登陆微信后，微信返回的code
+ */
 export function getOpenId(code) {
   return fetch(`${BASE_URL}/openId/get`, {
     appId: APP_ID,

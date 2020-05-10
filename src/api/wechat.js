@@ -1,5 +1,6 @@
-import { getOpenId } from 'api/index'
+import { getOpenId } from './index'
 
+/** *从微信平台查看某一权限,通常是用户信息,也可以是其他权限，具体可以看官网**/
 export function getSetting(auth) {
   return new Promise((resolve, reject) => {
     mpvue.getSetting({
@@ -17,6 +18,7 @@ export function getSetting(auth) {
   })
 }
 
+/** *从微信平台获取当前用户信息,注意在这之前必须获取权限**/
 export function getUserInfo() {
   return new Promise((resolve, reject) => {
     mpvue.getUserInfo({
@@ -76,6 +78,7 @@ export async function getUserOpenId() {
   }
 }
 
+/** *微信官方提供显示loading...**/
 export function showLoading(title) {
   mpvue.showLoading({
     title,
@@ -83,10 +86,12 @@ export function showLoading(title) {
   })
 }
 
-export function hideLoading(title) {
+/** *微信官方提供隐藏loading...**/
+export function hideLoading() {
   mpvue.hideLoading()
 }
 
+/** *微信官方提供隐藏toast...**/
 export function showToast(title, duration = 2000) {
   mpvue.showToast({
     title,
@@ -94,6 +99,7 @@ export function showToast(title, duration = 2000) {
   })
 }
 
+/** *封装微信模态框**/
 export function showModal(title, content, successFn = () => {}, failFn = () => {}) {
   mpvue.showModal({
     title: title,
